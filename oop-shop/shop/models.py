@@ -13,7 +13,7 @@ class Product:
     objects = []
     _id = 0
     def __init__(self, title, price, description, quantity,category):
-        self._id  = Product._id
+        self.id  = Product._id
         self.title = title
         self.price = price
         self.desc = description

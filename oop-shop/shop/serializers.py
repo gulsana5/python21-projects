@@ -9,7 +9,7 @@ class CategorySerializer(BaseSerializer):
 
 class ProductSerializer(BaseSerializer):
     class Meta:
-        fields = ["title", "price", "desc", "quantity", "category"]
+        fields = ["id","title", "price", "desc", "quantity", "category"]
         queryset = Product.objects
 
     def serialize_obj(self, obj):
