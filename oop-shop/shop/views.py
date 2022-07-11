@@ -1,16 +1,15 @@
-from dataclasses import field
-from itertools import product
-import re
+
+
 from abstract.utils import get_obj_or_404
 
-from .models import Category, Product
+from account.models import User
+from .models import Category, Product, Comment
 from .serializers import ProductSerializer, CategorySerializer
 
 def product_list():
     serializer = ProductSerializer()
-    product = serializer.serialize_queryset()
-    return product
-
+    products = serializer.serialize_queryset()
+    return products
 
 def product_create():
     title = input("Введите название: ")
@@ -27,7 +26,6 @@ def product_create():
     Product(title, price, desc, quantity, category)
     return "Продукт успешно создан"
 
-
 def product_detail(p_id):
     product = get_obj_or_404(Product, "id", int(p_id))
     serializer = ProductSerializer()
@@ -40,7 +38,7 @@ def product_delete(p_id):
 
 def product_update(p_id):
     product = get_obj_or_404(Product, "id", int(p_id))
-    field = input("Введите поля для изменения: ")
+    field = input("Введите поле для изменения: ")
     if field in dir(product):
         print(f"old value: {getattr(product, field)}")
         value = input(f"{field} = ")
@@ -48,3 +46,27 @@ def product_update(p_id):
     else:
         raise Exception(f"Поля {field} нет в продукте")
     return product_detail(p_id)
+
+def category_create():
+    title = input("Введите название категории: ")
+    Category(title)
+    return "Категория была успешно создана"
+
+def create_comment():
+    email = input("Введите email: ")
+    user = get_obj_or_404(User, "email", email)
+    print("Выберите продукт:")
+    for p in Product.objects:
+        print(p.title)
+    title = input("=======================\n")
+    product = get_obj_or_404(Product, "title", title)
+    body = input("Введите комментарий: ")
+    Comment(user, product, body)
+    return "Комментарий успешно добавлен"
+
+u = User("admin", "admin", "k")
+u.register("12345678", "12345678")
+u.login("12345678")
+cat = Category("test")
+p = Product("hello", 345, "vghjk", 2, cat)
+Comment(u, p, "hello world")
