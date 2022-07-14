@@ -13,14 +13,19 @@ class Category:
 class Product:
     objects = []
     _id = 0
+    colors = ("gold", "black", "blue", "white")
 
-    def __init__(self, title, price, description, quantity, category):
+    def __init__(self, title, price, description, quantity, category, color):
         self.id = Product._id
         self.title = title
         self.price = price
         self.desc = description
         self.quantity = quantity
         self.category = category
+        if color in Product.colors:
+            self.color = color
+        else:
+            raise Exception("Product 'color' is not valid")
         Product.objects.append(self)
         Product._id += 1
 
@@ -46,4 +51,3 @@ class Comment:
     
     def __str__(self):
         return f"{self.user.email} - [{self.created_at}] - {self.body}"
-

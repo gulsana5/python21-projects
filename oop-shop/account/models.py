@@ -1,7 +1,8 @@
 import permissions
 
 class User:
-    object = []
+    objects = []
+
     def __init__(self, email, name, sex):
         self.email = email
         self.name = name
@@ -9,14 +10,14 @@ class User:
         self.__password = None
         self.is_authenticated = False
         print(f"успешно создан юзер {self.email}")
+        # в objects добавляем обьект
+        User.objects.append(self)
 
     def register(self, password, password_confirm):
         if password != password_confirm:
             raise Exception("Пароли не совпадают")
         self.__password = password
         print(f"успешно зарегистрирован юзер {self.email}")
-        # в objects добовляем обьект
-        User.object.append(self)
 
     def login(self, password):
         if self.__password != password:
